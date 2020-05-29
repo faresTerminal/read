@@ -1,0 +1,427 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}الصفحة الرئسية{% endblock%}
+{% block content %}
+
+
+
+
+
+   {% if messages %}
+    <div class="alert alert-light text-center" role="alert" style="margin-top: 6.4em;">
+        {% for message in messages %}
+
+       
+
+        <!-- msg say hello for how login -->
+        {%if "welcome" in message.tags %}
+          <p class="text-dark shadow p-3 mb-5 bg-white rounded"> {{message}} {{full_name}} </p>   
+        {%endif%} 
+        <!-- end say hello --> 
+
+        
+       
+        <!-- password wrong -->
+        {%if "passwordWrong" in message.tags %}
+          <p class="text-dark shadow p-3 mb-5 bg-white rounded"> {{message}} ... <a href="/login" style="text-decoration: none"><span>إعادة المحاولة</span></a> </p>   
+        {%endif%} 
+        <!-- end password wrong --> 
+       
+
+     
+
+         <!-- msg article published -->
+        {%if "delete" in message.tags %}
+          <p class="text-dark shadow p-3 mb-5 bg-white rounded"> {{message}}  </p>   
+        {%endif%} 
+        <!-- end msg article published--> 
+
+         <!-- msg contact comment add-->
+        {%if "contactCM" in message.tags %}
+          
+       
+       
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: #fff;
+            background-color: #685884;width: 30%;">
+              <strong>{{message}}</strong> 
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                    </button>
+        </div>
+         {%endif%} 
+          <!-- end msg contact comment add--> 
+
+          <!-- when change password seccess -->
+        {%if "changed" in message.tags %}
+          <p class="text-dark shadow p-3 mb-5 bg-white rounded"> {{message}} </p>   
+        {%endif%} 
+        <!-- end logout -->
+
+        <!-- when password not change -->
+        {%if "error" in message.tags %}
+          <p class="text-dark shadow p-3 mb-5 bg-white rounded"> {{message}} {{full_name}} </p>   
+        {%endif%} 
+        <!-- end say hello --> 
+
+        {% endfor %}
+    </div>
+    {% endif %} 
+
+
+
+   
+    <!-- create jumbotron -->
+    
+
+    <div class="jumbotron  shadow p-3 mb-5 bg-white rounded text-center" style="margin-top: 10em;">
+      
+  <h1 class="display-4 " style="color: #32234b;">المدونات العربية
+</h1>
+  <p class="lead">
+مرحبا بك في المدونات العربية حيث الكلمات مهمة</p>
+  <hr class="my-4">
+  <p>سنقدم أفضل القصص والأفكار حول الموضوعات التي تهتم بها بشكل مباشر إلى صفحتك الرئيسية أو تطبيقك أو بريدك الوارد.</p>
+   {% if request.user.is_authenticated %}
+  <a class="btn btn-dark btn-md my-2 " href="/about/" role="button" style="background-color: #32234b;">المزيد.....</a>
+
+  
+   {% else %}
+    <a class="btn btn-dark btn-md my-2 " href="/about/" role="button" style="background-color: #32234b;">المزيد.....</a>
+
+   <a class="btn btn-warning btn-md my-2" href="/register/" role="button">ابدأ معنا</a>
+{% endif %}
+   <!--row-->
+   <div class="row" style="margin-top: 3em;">
+    <!-- column -->
+    <div class="col-lg">
+
+      
+    </div>
+    <!--end column -->
+     <!-- column -->
+     {% for sd in solo1 %}
+    <div class="col-lg-3 col-md-4 col-sm-6">
+
+     <div class="card " style="width: 18rem;">
+        <p style="background-color: {{sd.category.color}};
+              max-width: 2.5em;
+               height: 0.2em;
+              ;padding: 0.2em; border-radius: 3% 3% 0% 0%;"></p>
+  
+     <a class="" href="/article/{{sd.id}}/{{sd.slug}}" style="color:#212529; text-decoration: none !important">
+     <img class="card-img-top" src="{{sd.image.url}}" alt="Card image cap" style="height: 10em;border-radius: 0% 0% 3% 3%;">
+     <div class="card-body">
+         <p class="card-text" > {{sd.title}}</p></a>
+       
+      </div>
+     </div>
+      
+    </div>
+    <!--end column -->
+    {% endfor %}
+
+    
+     <!-- column -->
+    
+    <div class="col-lg">
+      
+    </div>
+    <!--end column -->
+     
+   </div>
+   <!-- end row -->
+   
+
+
+  
+                   
+  
+
+ 
+</div>
+    <!-- end jumbotron -->
+    <br/>
+    <br/>
+
+
+<!-- create solo -->
+<div class="container">
+  <!-- row -->
+  <div class="row">
+    <!-- column -->
+    {% for sl in solo %}
+    <div class="col-lg">
+       <nav class="social1">
+          <ul>
+            
+              <li><a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_url}}"><i class="fa fa-facebook"></i></a></li>
+              <li><a href="https://twitter.com/home?status={{request.build_absolute_url}}%20{{share_title}}"><i class="fa fa-twitter"></i></a></li>
+              <li><a href="https://plus.google.com/share?url=dzblog.pythonanywhere.com/article/{{sl.id}}/"><i class="fa fa-google-plus-square "></i></a></li>
+              <!-- <li><a href="ref"><i class="fa fa-linkedin"></i></a></li> -->
+              <!--<li><a href="ref"><i class="fa fa-youtube"></i></a></li>-->
+             <!-- <li><a href="ref"><i class="fa fa-instagram"></i></a></li>-->
+          </ul>
+      </nav>
+      
+     
+      
+    </div>
+    <!-- end column -->
+     <!-- column -->
+     
+    <div class="col-lg-10">
+
+       <p class="h4 my-4 ">{{sl.title}}<span style="color: {{sl.category.color}}" > ({{sl.category}})</span></p></a>
+
+       <figure class="figure">
+
+         <img  src="{{sl.image.url}}" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+         <figcaption class="figure-caption py-1 font-weight-bold">{{sl.taker_image}}</figcaption>
+
+      
+       <figcaption class="text-info"><a href="/user/{{sl.avatar.id}}" style="text-decoration: none;"> {{ sl.article_author}} 
+        <div class="photo">
+            <div class="avatar" style="background-image: url('{{sl.avatar.profile_picture.url}}')"></div>
+             
+        </div></a></figcaption>
+  
+         </figure>
+           
+          
+
+        
+          <figcaption class="text-secondary h6">تاريخ النشر: {{ sl.posted_on}}</figcaption>
+
+       
+       
+      
+       
+       <br/>
+
+       <p class="h6">{{sl.body|safe}}</p>
+       <br/>
+       <p> <button type="button" class="btn btn-light">
+       لإعجابات <span class="badge badge-light">{{ sl.total_likes}}</span>
+      </button></p>
+      <p> <button type="button" class="btn btn-light">عدد المشاهدات <span class="badge badge-light">{{ sl.read}}</span>
+      </button></p>
+     
+
+
+      
+    </div>
+    {% endfor %}
+    <!-- end column -->
+     <!-- column -->
+   
+    <!-- end column -->
+    
+  </div>
+  <!-- end row -->
+  
+</div>
+<!-- end solo -->
+
+   
+
+
+
+	 <!-- create global content -->
+   <div class="container">
+
+    <div class="row" style="margin-top: 5em;"> 
+       <div class="col-lg-12 my-4 border-bottom "> <p class="h5  shadow-lg p-3 mb-5 bg-white rounded" style="background-color: #32234b !important;
+          color: #fff;">مقالات متنوعة</p></div>
+
+        <!-- column -->
+        {% for first in first_article %}  
+        <div class="col-lg-6 rounded my-4   border-bottom">
+
+
+            <!-- row-->
+            <div class="row">
+
+
+
+              
+             <!-- small col -->
+             <div class="col-lg-6 col-md-6">
+
+                    <figure class="figure">
+                       <a class="" href="/article/{{first.id}}/{{first.slug}}" > <img  src="{{first.image.url}}" class="figure-img img-fluid rounded " alt="A generic square placeholder image with rounded corners in a figure."></a>
+  
+                   </figure>
+                    
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+                  <p class="font-weight-bold badge  py-1" style="color: #fff;background-color: {{first.category.color}};font-size:0.9em;padding: 1em;"> {{first.category}} </p>
+                   
+                    <a class="" href="/article/{{first.id}}/{{first.slug}}" style="color:#212529; text-decoration: none !important"> <p class="h4 my-2">{{first.title}}</p></a>
+                    <a href="/user/{{first.avatar.id}}" style="text-decoration: none"> {{ first.article_author}}</a>
+                    <img class="rounded-circle" style="max-width: 2.5em; margin-right: 10px;height: 2.5em;" src="{{first.avatar.profile_picture.url}}">
+                  
+
+
+
+                    <ul class="list-group">
+                      
+
+                       <li class="list-group-item d-flex justify-content-between align-items-center">
+                         <span class="text-info">
+
+
+                          </span>
+                      <span class="badge  badge-pill" >{{ first.total_likes}} <i class="far fa-thumbs-up" ></i>  <span class="badge  badge-pill" >{{ first.read}}</span>
+                    <i class="far fa-eye"></i></span>
+                      <span class="badge  badge-pill" >{{ first.posted_on}}</span>
+
+                       </li>
+                       
+                        
+                      
+
+                    </ul>
+
+
+                    
+              </div>
+                <!-- end small col -->
+               
+
+            </div>
+            <!-- end row -->
+
+         </div>
+
+         {% endfor %}
+         <!-- end column -->
+        
+    </div>
+    <!-- end row -->
+    </div>
+    <!-- end conatiner -->
+    <br/>
+    <br/>
+
+  
+	
+	
+
+
+	<!-- end first row -->
+
+    
+
+
+    <!-- create global content -->
+   <div class="container">
+
+    <div class="row">
+
+        <!-- column -->
+        <div class="col-lg-8 ">
+            <!-- row-->
+            <div class="row">
+
+                <div class="col-lg-12 my-4 border-bottom "> <p class="h5 shadow-lg p-3 mb-5 bg-white rounded" style="background-color: #32234b !important;
+                 color: #fff;">مقالات مميزة</p></div>
+
+              {% for article in featured %}  
+             <!-- small col -->
+             <div class="div border-bottom my-2">
+
+             <div class="col-lg-4 col-md-6">
+            
+                    <figure class="figure">
+                       <a class="" href="article/{{article.id}}/{{article.slug}}" > <img src="{{article.image.url}}" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."></a>
+
+  
+                   </figure>
+                  
+                    
+              </div>
+
+              <div class="col-lg-8 col-md-6">
+                 <p class="font-weight-bold" style="color: {{article.category.color}};"> {{article.category}} </p>
+                    <a class="" href="/article/{{article.id}}/{{article.slug}}" style="color: #32234b; text-decoration: none !important"> <p class="h5">{{article.title}}</p></a>
+                     
+
+
+                  
+                    
+                   <a href="/user/{{article.avatar.id}}"> <p class="h6 badge badge-light" style="margin-top: 2em;">{{article.article_author}}</p></a>
+                   <img class="rounded-circle" style="max-width: 2.5em; margin-right: 10px;height: 2.5em;" src="{{article.avatar.profile_picture.url}}">
+                    <p class="h6">{{ article.posted_on}}</p>
+                     <p> 
+                      <span class="badge badge-light">{{  article.total_likes}}</span> <i class="far fa-thumbs-up" style="color:#32234b;">
+                        <span class="badge  badge-pill" >{{ article.read}}</span><i class="far fa-eye"></i>
+                      </i>   
+                    </p>
+                    
+              </div>
+            </div>
+                <!-- end small col -->
+                {% endfor %}
+
+
+
+            </div>
+            <!-- end row -->
+
+         <!-- show more-->
+          <a class="btn btn-dark btn-sm my-2 " href="#" role="button" style="background-color: #32234b;" id="loadMore">عرض المزيد....</a>
+        
+
+        
+       
+
+        <!-- end show more -->
+
+        </div>
+        <!-- end column -->
+
+
+
+        
+        <!-- column -->
+        <div class="col-lg ">
+            <div class="row ">
+                 <div class="col-lg-12 my-4 border-bottom "> <p class="h5  shadow-lg p-3 mb-5 bg-white rounded" style="background-color: #32234b !important;
+                  color: #fff;">أكثر قراءة</p></div>
+
+                 {% for five_art in five_articles%}
+                <div class="col-lg-12  col-md-6 col-sm-8 shadow p-3 mb-5 bg-white rounded" 
+                style="background:url({{five_art.image.url}});background-size: cover; ">
+                    <div class="card" style="width: 18rem;opacity: 0.8;
+                    background-color: #16141a;" >
+                      <div class="card-body" style="color: #fff"> 
+                        <p class="font-weight-bold badge  py-1" style="color: #fff;background-color: {{five_art.category.color}}"> {{five_art.category}} </p>
+                        <h5 class="card-title " >{{five_art.title}}</h5>
+                         <span class="badge  badge-pill" >{{ five_art.read}}</span><i class="far fa-eye"></i>
+                        <a style="text-decoration: none" href="/user/{{five_art.avatar.id}}"> <h6 style="color:{{five_art.category.color}};  ">{{five_art.article_author}}</h6>
+
+                         
+
+                       
+                        <a href="/article/{{five_art.id}}/{{five_art.slug}}" class="card-link">تفاصيل...</a>
+   
+                      </div>
+                    </div>
+                 </div>
+                 {% endfor %}
+
+        
+    </div>
+       
+   </div>
+ </div>
+</div>
+
+
+
+{% endblock %}
+    
+
+
+

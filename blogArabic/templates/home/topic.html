@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}تصنيف المقال{% endblock %}
+
+{% block content %}
+
+ {% if first_post %}
+      {% for f in first_post%}
+ <nav aria-label="breadcrumb " style="margin-top: 8em">
+  <div class="container">
+  <ol class="breadcrumb shadow p-3 mb-5 bg-white rounded">
+    
+    <li class="breadcrumb-item"><a href="/">الصفحة الرئسية</a></li>
+    <li class="breadcrumb-item" aria-current="page"> {{f.category}}</li>
+
+  </ol>
+  </div>
+
+</nav>
+
+  
+  <div class="container">
+<!-- create first row -->
+
+    <div class="row py-2" style="margin-top: 5em;">
+     
+      <!-- column -->
+
+      <div class="col-lg-8 ">
+        
+         <p class="font-weight-bold badge  py-1" style="color: #fff;background-color: {{f.category.color}}"> {{f.category}} </p>
+       
+        <figure class="figure shadow-lg p-3 mb-5 bg-white rounded">
+          <figcaption class="figure-caption py-1 font-weight-bold">متميز</figcaption>
+         <a class="" href="/article/{{f.id}}/{{f.slug}}" >
+
+          <img  src="{{f.image.url}}" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure." height="200" width="70%"></a>
+
+
+
+         <a class="" href="/article/{{f.id}}/{{f.slug}}" style="color: #32234b; text-decoration: none !important"><p class="h4 font-weight-bold">{{f.title}}</p></a>
+       
+
+
+         <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-4">
+          
+              
+              <figcaption class="text-info"><a href="/user/{{f.avatar.id}}"> {{ f.article_author}}</a></figcaption>
+      
+         <div class="photo">
+            <div class="avatar" style="background-image: url('{{f.avatar.profile_picture.url}}')"></div>
+             
+            
+          
+        </div>
+          <figcaption class="figure-caption py-1 font-weight-bold text-secondary">تاريخ النشر: {{ f.posted_on}}</figcaption>
+
+             <p> 
+                      <span class="badge badge-light">{{  f.total_likes}}</span> <i class="far fa-thumbs-up" style="color:#32234b;"></i>   
+             </p>
+            
+          </div>
+           
+         </div>
+          
+        </figure>
+        {% endfor %}
+
+        
+
+        <p class="h6 pr1 border-bottom py-2">مقالات الجديدة</p>
+        {% for s in post %}
+        <!-- row for new publication -->
+        <div class="row py-2">
+          
+          <!-- column-->
+          <div class="col-lg-4 col-md-6">
+            <figure class="figure">
+           <a class="" href="/article/{{s.id}}/{{s.slug}}" style="color: #32234b; text-decoration: none !important"><img src="{{s.image.url}}" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."></a>
+  
+                </figure>
+            
+          </div>
+          <!-- end column-->
+
+           <!-- column-->
+          <div class="col-lg col-md-6">
+           <a class="" href="/article/{{s.id}}/{{s.slug}}" style="color: #32234b; text-decoration: none !important"> <p class="h6 pr1 font-weight-bold">{{s.title}}</p></a>
+            
+            <p class="h6 pr2" style="margin-right: 4em; margin-top: 1em; ">{{ s.article_author }}</p>
+            <p class="h6 pr2 " style="margin-right: 5em;  ">{{ s.posted_on}}</p>
+             <p> 
+                      <span class="badge badge-light">{{  s.total_likes}}</span> <i class="far fa-thumbs-up" style="color:#32234b;"></i>   
+             </p>
+            
+          </div>
+          <!-- end column-->
+
+          
+        </div>
+        <!-- end row new publications-->
+        {% endfor %}
+
+
+        <!-- add paginator-->
+        <nav aria-label="...">
+  <ul class="pagination">
+    <span class="step-links">
+        {% if post.has_previous %}
+            <a href="?page=1">&laquo; الأول</a>
+            <a href="?page={{ post.previous_page_number }}">السابقة</a>
+        {% endif %}
+
+        <span class="current">
+            صفحة {{ post.number }} من {{ post.paginator.num_pages }}.
+        </span>
+
+        {% if post.has_next %}
+            <a href="?page={{ post.next_page_number }}">التالية</a>
+            <a href="?page={{ post.paginator.num_pages }}">الأخير &raquo;</a>
+        {% endif %}
+    </span>
+  </ul>
+</nav>
+
+        <!-- end paginator -->
+          
+
+        
+
+        
+      </div>
+      <!-- end column-->
+      <!-- column -->
+       <div class="col-lg-4 ">
+       <p class="h6 pr1 border-bottom py-2 " style="margin-top: 2.5em;">مقالات متنوعة</p>
+        <!-- add row -->
+        {% for t in six_articles %}
+        <div class="row border-bottom my-2">
+          <!-- column-->
+          <div class="col-lg-4 col-md-6">
+            <figure class="figure">
+            <a class="" href="/article/{{t.id}}/{{t.slug}}" > <img src="{{t.image.url }}" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."></a>
+            
+           </figure>
+            
+          </div>
+          <!-- end column -->
+
+          <!-- column -->
+          <div class="col-lg-8 col-md-6">
+             <a class="" href="/article/{{t.id}}/{{t.slug}}" style="color: #32234b; text-decoration: none !important"><p class="h6 pr1 font-weight-bold">{{t.title}}</p></a>
+            <p class="h6" style="margin-top: 1em;">{{ t.posted_on}}</p>
+            
+          </div>
+          <!-- end column -->
+
+          
+        </div>
+        <!-- end row -->
+        {% endfor %}
+</div>
+
+
+        <br/>
+        
+    
+  </div>
+</div>
+</div>
+
+  <!-- end container -->
+  
+    <!-- else display no articles to show -->
+    {% else%}
+            <div class="container">
+        <div class="row" style="margin-top: 15em;">
+          <div class="col-lg"></div>
+         <div class="col-lg-8 text-center">
+          <p class="h6 my-4" style="font-size: 2em !important;">آسف لكن لا تتوفر مقالات في هذا الجانب</p>
+          <p class="h6 my-4" style="font-size: 2em !important;">نرجو منك أن تضيف مقالة جديدة من تحريرك</p>
+          {% if request.user.is_authenticated %}
+          <a class="btn btn-dark btn-lg " href="/create/" role="button" style="margin-top: 2em; background-color: #32234b ">إضافة مقال</a>
+          </div>
+          {% else%}
+          <a class="btn btn-dark btn-md " href="/login/" role="button" style="margin-top: 2em; background-color: #32234b ">تسجيل دخول</a> 
+           <a class="btn btn-dark btn-md " href="/register/" role="button" style="margin-top: 2em; background-color: #32234b ">فتح حساب</a>
+         </div>
+         {% endif %}
+          <div class="col-lg"></div>
+       </div>
+     </div>
+</div>
+
+       
+        {% endif %}
+
+ 
+  
+
+{% endblock %}

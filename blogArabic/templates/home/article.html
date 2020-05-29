@@ -1,0 +1,333 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}{{art.title}}{% endblock %}
+{% block content %}
+
+
+
+
+
+{% if messages %}
+    <div class="alert alert-success text-center " style="margin-top: 8em;">
+        {% for message in messages %}
+
+      
+        <!-- when password not change -->
+        {%if "commentuser" in message.tags %}
+          <p> {{message}} {{full_name}} </p>   
+        {%endif%} 
+        <!-- end say hello --> 
+            <!-- msg article published -->
+        {%if "Done" in message.tags %}
+          <p> {{message}}  </p>   
+        {%endif%} 
+        <!-- end msg article published--> 
+
+        {% endfor %}
+    </div>
+    {% endif %} 
+
+ <nav aria-label="breadcrumb " style="margin-top: 8em">
+  <div class="container">
+  <ol class="breadcrumb shadow p-3 mb-5 bg-white rounded">
+    
+    <li class="breadcrumb-item"><a href="/">الصفحة الرئسية</a></li>
+    <li class="breadcrumb-item active" aria-current="page"> {{art.title}}</li>
+
+  </ol>
+  </div>
+
+</nav>
+ 
+
+  <!-- container -->
+  <div class="container">
+    <!-- create first row -->
+  <div class="row" style="margin-top: 5em;">
+    <!-- column -->
+    <div class="col-lg-6 col-md-6">
+        <figure class="figure ">
+         <img src="{{art.image.url}}" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+         <figcaption class="figure-caption">{{ art.taker_image}}</figcaption>
+  
+        </figure>
+        
+    </div>
+    <!-- end column -->
+
+    <!-- column -->
+    <div class="col-lg-6 shadow-lg p-3 mb-5 bg-white rounded col-md-6">
+        <p class="font-weight-bold badge  py-1" style="color: #fff;background-color: {{art.category.color}}"> {{art.category}} </p>
+        <p class="h1 font-weight-bold">{{art.title}}</p>
+
+         <img src="{{ art.avatar.profile_picture.url }}" class="rounded-circle imgg" style="width: 30%; margin-top: 1.5em;">
+            <a href="/user/{{art.avatar.id}}"> <figcaption class="figure-caption py-1 font-weight-bold">{{ art.article_author}}</figcaption></a>
+            <p class="h6 pr" style="margin-right: 5em;">{{ art.posted_on}}</p>
+            <p class="h6 pr" style="margin-right: 5em;"><i class="far fa-eye"></i> {{ art.read}}</p>
+
+
+            <!-- social media -->
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                              <div class="container">
+  <div class="row">
+    <div class="social">
+            <ul>
+                <li><a href="{{art.avatar.facebook_account}}"><i class="fa fa-lg fa-facebook"></i></a></li>
+                <li><a href="{{art.avatar.twitter_account}}"><i class="fa fa-lg fa-twitter"></i></a></li>
+              
+                <li><a href="{{art.avatar.instagram_account}}"><i class="fa fa-lg fa-instagram"></i></a></li>
+               
+                <li><a href="{{art.avatar.youtube_channel}}"><i class="fa fa-lg fa-youtube-play"></i></a></li>
+            </ul>
+        </div>
+  </div>
+</div>
+                                              
+                                            </div>
+                                           
+                                        </div>
+                                        <!-- end social media -->
+        
+    </div>
+    <!-- end column -->
+     <div class="container">
+
+   
+        <div class="text-center center-block">
+            <p class="txt-railway">مشاركة المقال</p>
+            <br />
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_url}}"><i id="social-fb" class="fa fa-facebook-square fa-3x social" target = "_blank"></i></a>
+
+              <a href="https://twitter.com/home?status={{request.build_absolute_url}}%20{{share_title}}"><i id="social-tw" class="fa fa-twitter-square fa-3x social"></i></a>
+              <a href="https://plus.google.com/share?url=dzblog.pythonanywhere.com/article/{{art.id}}"><i id="social-gp" class="fa fa-google-plus-square fa-3x social"></i></a>
+              <a href="mailto:bootsnipp@gmail.com"><i id="social-em" class="fa fa-envelope-square fa-3x social"></i></a>
+</div>
+   
+</div>
+      
+  </div>
+
+  <!-- end first row -->
+</div>
+<!-- end container -->
+
+
+<div class="container">
+<!-- row -->
+<div class="col-lg-10">
+    
+    <p class="h6 pr3 " style="border-bottom: 2px #eee solid ; padding-bottom: 3em;">
+        {{art.body|safe}}
+       
+    </p>
+    
+    <p class="lead" style="margin-top: 4em;">  المصدر <span style="color: #32234b">{{art.source}}</span></p>
+
+
+   
+     
+</div>
+
+   
+<!--end row -->
+</div>
+
+<!-- like dislike-->
+<!-- container-->
+<div class="container">
+  <!-- row-->
+  <div class="row" style="margin-top: 4em;">
+  
+   <div class="col-lg">
+  <button type="button" class="btn btn-light">
+  الإعجابات <span class="badge badge-light">{{ total_likes }}</span>
+</button>
+
+ 
+</div>
+     <!-- column -->
+   <div class="col-lg-2 text-right"> 
+{% if request.user.is_authenticated %}
+<form action="{% url 'blogArabic:like_post' %}" method="post">
+  {% csrf_token %}
+  {% if is_liked %}
+    <button type="submit" id="like" name="post_id" value="{{ post.id  }} " class="btn btn-danger"><i class="far fa-thumbs-down"></i></button>
+  {% else %}
+    <button type="submit" id="like" name="post_id" value="{{ post.id }}" class="btn btn-primary "><i class="far fa-thumbs-up " ></i></button>
+  {% endif %}
+</form>
+
+{% endif %}
+</div>
+
+    <!--end column -->
+
+  <div class="col-lg"></div>
+    
+  </div>
+  <!-- end row-->
+  
+</div>
+<!-- end conatiner-->
+<!-- end like dislike button -->
+
+
+
+<!-- comment text -->
+
+
+<div class="comments" style="margin-top: 5em;">
+  <p class="text-center border-bottom my-5">التعليقات</p>
+   
+      {% for cf in add %} 
+    <div class="comment-wrap">
+        <div class="photo">
+            <div class="avatar" style="background-image: url('{{cf.avatar_commenter.profile_picture.url}}')"></div>
+            <p class="text-right">{{cf.user_comment}}</p>
+        </div>
+        <div class="comment-block">
+            <p class="comment-text">{{cf.comment }}</p>
+            <div class="bottom-comment">
+                <div class="comment-date">{{cf.date}}</div>
+                <ul class="comment-actions">
+                   
+                    <!-- <li class="reply">Reply</li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+   
+</div>
+
+</div>
+
+<!-- end comment text -->
+{% if request.user.is_authenticated %}
+<!--comment-->
+  <div class="container">
+  <div class="row" style="margin-top: 5em;">
+    <h3 class="my-4">إضافة تعليق مناسب</h3>
+  </div>
+    
+    <div class="row">
+    
+    <div class="col-lg-6 col-md-10 shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="widget-area no-padding blank">
+                <div class="status-upload">
+                  <form class="add_cm" action="/add_comment/{{art.id}}/" method="post">{% csrf_token %}
+                    <textarea class="" placeholder="تعليق مناسب"  name="comment"></textarea>
+                  
+                    <button type="submit" class="btn btn-success " style="background-color: #32234b">تعليق</button>
+                  </form>
+                </div><!-- Status Upload  -->
+              </div><!-- Widget Area -->
+            </div>
+        
+    </div>
+     
+     <br/>
+</div>
+</div>
+<!--end row -->
+
+<!-- end comment-->
+{% endif %}
+
+
+
+  <!-- container -->
+  <div class="container">
+    <!-- create second row -->
+  <div class="row shadow-lg p-3 mb-5 bg-white rounded" style="margin-top: 10em;" >
+
+    <!-- column -->
+    {% for fr in first %}
+    <div class="col-lg-6 col-md-6">
+        <p class="h6 pr1 text-primary">قراءة التالي</p>
+        <p class="font-weight-bold badge  py-1" style="color: #fff;background-color: {{fr.category.color}}"> {{fr.category}} </p>
+       <a class="" href="/article/{{fr.id}}/{{fr.slug}}" style="color: #212529; text-decoration: none !important;"> <p class="h1 font-weight-bold">{{fr.title}}</p></a>
+
+         <img src="{{ fr.avatar.profile_picture.url }}" class="rounded-circle imgg" style="width: 30%; margin-top: 1.5em;">
+            <p class="h6 pr" style="margin-right: 4em;">{{ fr.article_author }}</p>
+            <p class="h6 pr" style="margin-right: 5em;">{{ fr.posted_on}}</p>
+        
+    </div>
+    <!-- end column -->
+
+    <!-- column -->
+    <div class="col-lg-6 col-md-6">
+        <figure class="figure">
+          <a class="" href="/article/{{fr.id}}/{{fr.slug}}"><img src="{{fr.image.url }}" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."></a>
+         <figcaption class="figure-caption">{{fr.taker_image}}</figcaption>
+  
+        </figure>
+        
+    </div>
+    <!-- end column -->
+    {% endfor %}
+
+    
+      
+  </div>
+
+  <!-- end second row -->
+</div>
+<!-- end container -->
+
+<!-- container -->
+<div class="container">
+    <!-- third row -->
+  
+    
+    
+    <div class="row  " >
+     
+        <!-- column -->
+         {% for td in three %}
+        <div class="col-lg-3 shadow-none p-3 mb-5 bg-light rounded">
+
+            
+            <figure class="figure">
+               <p class="font-weight-bold badge  py-1" style="color: #fff;background-color: {{td.category.color}}"> {{td.category}} </p>
+              <a class="" href="/article/{{td.id}}/{{td.slug}}" style="color: #32234b;"> <img src="{{td.image.url}}" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure." style="height: 9em;"></a>
+            
+           </figure>
+           <a class="" href="/article/{{td.id}}" style="color: #32234b;"> <p class="h6 pr1 font-weight-bold">{{td.title}}</p></a>
+           
+    
+            
+      
+           
+
+           <p class="h6 pr2 " style="margin-top: 2em;">{{ td.article_author }}</p>
+           <p class="h6 pr2 ">{{ td.posted_on }}</p>
+            <p> 
+                      <span class="badge badge-light">{{  td.total_likes}}</span> <i class="far fa-thumbs-up" style="color:#32234b;"></i>   
+           </p>
+          
+        </div>
+        {% endfor %}
+        
+        <!-- end column -->
+
+    </div>
+    <!-- end third row -->
+    
+
+
+    
+</div>
+<!-- end container -->
+
+
+
+
+
+
+
+
+{% endblock %}
